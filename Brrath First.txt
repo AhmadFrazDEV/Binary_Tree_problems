@@ -1,0 +1,187 @@
+#include<iostream>
+#include<queue>
+#include<stdlib.h>
+using namespace std;
+
+struct node
+{
+	string name;
+	int age;
+	char gender;
+	node *left;
+	node *right;
+};
+
+class family{
+	node *root = NULL;
+	queue<node *>q;
+	public:
+		node *input(string n , int a , char g)
+		{
+			node *temp = new node();
+			temp->name = n;
+			temp->age = a;
+			temp->gender = g;
+			temp->left = NULL;
+			temp->right = NULL;
+			return temp;	
+		}
+		void addData()
+		{
+					string name;
+					int age;
+					char gender;
+					cout << "NAME : ";
+					cin >> name;
+					cout << "AGE : ";
+					cin >> age;
+					cout << "GENDER : ";
+					cin >> gender;
+					if(root == NULL) root = input(name , age , gender);
+					else
+					{
+						if(age > root->age)
+						{
+							root->right = input(name , age , gender);
+						}
+						if(age < root->age)
+						{
+							root->left = input(name , age , gender);
+						}
+					}
+		}
+		
+		void search(string name)
+		{
+			
+			q.push(root);
+			while(!q.empty())
+			{
+				node *temp = q.front();
+				q.pop();
+				if(temp->name == name)
+				{
+					cout << "Record Found" << endl;
+					cout << "Detail" << endl;
+					cout << temp->name << " "  << temp->age << " " << temp->gender << endl;
+					break;
+				}
+				if(temp->left != NULL) q.push(temp->left);
+				if(temp->right != NULL) q.push(temp->right);
+			}
+			cout << "Record is not found...";
+		}
+		
+		void viewParent(string name)
+		{
+			int count = 0;
+			node *temp1;
+			q.push(root);
+			while(!q.empty())
+			{
+				node *temp = q.front();
+				
+				q.pop();
+				if(temp->name == name)
+				{
+					break;
+				}
+				else
+				{
+					temp1 = temp;
+				}
+				count ++;
+				if(temp->left != NULL) q.push(temp->left);
+				if(temp->right != NULL) q.push(temp->right);
+			}
+			
+			if(count == 0) cout << "No Record Found";
+			if(count > 0)
+			{
+				cout << temp1->name << " " << temp1->age << " " << temp1->gender << endl;
+			}
+		}
+		
+		void print()
+		{
+			q.push(root);
+			while(!q.empty())
+			{
+				node *temp = q.front();
+				q.pop();
+				cout << temp->name << " "  << temp->age << " " << temp->gender << endl;
+				if(temp->left != NULL) q.push(temp->left);
+				if(temp->right != NULL) q.push(temp->right);
+			}
+		}
+		
+		void viewChild(string name)
+		{
+			int count = 0;
+			node *temp1;
+			q.push(root);
+			while(!q.empty())
+			{
+				node *temp = q.front();
+				
+				q.pop();
+				if(temp->name == name)
+				{
+					
+					break;
+				}
+				else
+				{
+					temp1 = temp;
+				}
+				count ++;
+				if(temp->left != NULL) q.push(temp->left);
+				if(temp->right != NULL) q.push(temp->right);
+			}
+			
+			if(count == 0) cout << "No Record Found";
+			if(count > 0)
+			{
+				cout << temp1->name << " " << temp1->age << " " << temp1->gender << endl;
+			}
+		}
+};
+
+
+int menu()
+{
+	cout << "1. Add person" << endl;
+	cout << "2. Search Person" << endl;
+	cout << "3. View Parent" << endl;
+	cout << "4. View childrn of parent" << endl;
+	cout << "5. View Family Members" << endl;
+	cout << "6. Exit" << endl;
+	int opt;
+	 cout << "Your option...";
+	 cin >> opt;
+	  return opt;
+}
+
+main()
+{
+	family f;
+	int opt = menu();
+	while(opt!=6)
+	{
+		if(opt == 1)  f.addData();
+		if(opt == 2)  f.search("Abbu");
+		if(opt == 3) f.viewParent("Abbu");
+		if(opt == 4) f.viewChild("Abbu");
+		if(opt == 5)  f.print();
+		if(opt == 6) break;
+				
+				
+		cout << "Any Key to continue.......";
+		char x;
+		cin >>  x;
+		system("cls");
+		opt = menu();
+	}
+
+	
+}
